@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour toi, Aina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffe6f2, #ffc2e2, #ffb3d9, #ff99cc);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 650px;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 153, 204, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        h1 {
+            color: #e83e8c;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(to right, #ff66b3, #e83e8c);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(232, 62, 140, 0.4);
+            transition: all 0.4s ease;
+            margin-top: 30px;
+            font-weight: 500;
+        }
+        
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(232, 62, 140, 0.6);
+        }
+        
+        .hidden-message {
+            display: none;
+            height: 350px;
+            overflow-y: auto;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 1px solid rgba(232, 62, 140, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s ease;
+            position: relative;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6em;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .message-title {
+            text-align: center;
+            color: #e83e8c;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .signature {
+            text-align: right;
+            color: #e83e8c;
+            font-weight: bold;
+            margin-top: 30px;
+            font-size: 1.2em;
+            position: relative;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .signature::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(to right, transparent, #e83e8c, transparent);
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .show {
+            display: block;
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .petal {
+            position: absolute;
+            z-index: 9;
+            animation: falling linear forwards;
+            opacity: 0.8;
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-50px) translateX(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(calc(100vh + 50px)) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Barre de défilement personnalisée */
+        .hidden-message::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .hidden-message::-webkit-scrollbar-track {
+            background: rgba(255, 230, 242, 0.6);
+            border-radius: 10px;
+        }
+        
+        .hidden-message::-webkit-scrollbar-thumb {
+            background: rgba(232, 62, 140, 0.5);
+            border-radius: 10px;
+        }
+        
+        .hidden-message::-webkit-scrollbar-thumb:hover {
+            background: rgba(232, 62, 140, 0.7);
+        }
+        
+        .scroll-button {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(232, 62, 140, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(232, 62, 140, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .scroll-button:hover {
+            background: rgba(232, 62, 140, 1);
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 5px 15px rgba(232, 62, 140, 0.5);
+        }
+        
+        .heart {
+            position: absolute;
+            color: #e83e8c;
+            font-size: 1.5em;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Un message secret pour toi...</h1>
+        <p>Dévoile ce que mon cœur n'ose te dire de vive voix...</p>
+        <button class="button" onclick="revealMessage()">Découvrir mon message</button>
+        
+        <div class="hidden-message" id="secretMessage">
+            <div class="message-title">🌹 Pour mon unique Aina 🌹</div>
+            <p class="paragraph" id="p1">Ma tendre Aina,</p>
+            <p class="paragraph" id="p2">Depuis que nos mots se croisent, c'est comme si chaque battement de mon cœur dansait pour toi. Tu es ce souffle doux qui apaise mes silences, cette lumière discrète qui éclaire mes pensées les plus secrètes.</p>
+            <p class="paragraph" id="p3">Quand je ferme les yeux, c'est ton sourire que j'imagine… Et même le vent me murmure ton prénom avec tendresse.</p>
+            <p class="paragraph" id="p4">Je ne veux rien précipiter, mais je ressens déjà que mon cœur a trouvé en toi un écho si beau, si vrai. Chaque instant avec toi devient un pétale de bonheur que je veux chérir, encore et encore.</p>
+            <p class="paragraph" id="p5">Aina, j'espère que nos chemins continueront de s'entrelacer, et que nos cœurs, doucement, apprendront à battre au même rythme.</p>
+            <p class="paragraph signature" id="p6">Avec tout mon affection,<br>— Balsama <span class="heart">💖</span></p>
+            
+            <button class="scroll-button" id="scrollButton" onclick="scrollDown()">↓</button>
+        </div>
+    </div>
+
+    <script>
+        // Tableau de pétales variés
+        const petals = ['🌸', '🌺', '🌹', '🌷', '💮', '🥀', '🌻', '💐'];
+        const colors = ['#ff99cc', '#e83e8c', '#ffb6c1', '#ffc0cb', '#ff85a2', '#ff66b3'];
+        
+        // Fonction pour créer des pétales
+        function createPetals(quantity) {
+            for (let i = 0; i < quantity; i++) {
+                setTimeout(() => {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    
+                    // Choisir aléatoirement entre emoji de fleur ou élément CSS
+                    if (Math.random() > 0.5) {
+                        petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+                        petal.style.fontSize = Math.random() * 20 + 15 + 'px';
+                    } else {
+                        // Créer un pétale avec CSS
+                        petal.style.width = Math.random() * 20 + 10 + 'px';
+                        petal.style.height = Math.random() * 30 + 15 + 'px';
+                        petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        petal.style.borderRadius = '50% 0 50% 0';
+                        petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    }
+                    
+                    // Position et animation
+                    petal.style.left = Math.random() * 100 + '%';
+                    petal.style.animationDuration = Math.random() * 10 + 5 + 's';
+                    petal.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    document.body.appendChild(petal);
+                    
+                    // Supprimer le pétale après son animation
+                    setTimeout(() => {
+                        document.body.removeChild(petal);
+                    }, (parseFloat(petal.style.animationDuration) + parseFloat(petal.style.animationDelay)) * 1000);
+                    
+                }, i * 100);
+            }
+        }
+        
+        // Ajouter des cœurs flottants
+        function addHearts() {
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                heart.style.fontSize = Math.random() * 15 + 10 + 'px';
+                heart.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(heart);
+            }
+        }
+        
+        function revealMessage() {
+            const message = document.getElementById('secretMessage');
+            message.classList.add('show');
+            
+            // Créer une pluie initiale de pétales
+            createPetals(30);
+            
+            // Continuer à ajouter des pétales périodiquement
+            setInterval(() => {
+                createPetals(5);
+            }, 3000);
+            
+            // Ajouter des cœurs
+            addHearts();
+            
+            // Animer chaque paragraphe séquentiellement
+            const paragraphs = document.querySelectorAll('.paragraph');
+            paragraphs.forEach((p, index) => {
+                setTimeout(() => {
+                    p.style.animation = 'fadeUp 1s forwards';
+                    
+                    // Faire défiler automatiquement pour suivre le texte
+                    if (index > 1) { // Commencer le défilement après quelques paragraphes
+                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    // Afficher le bouton de défilement après quelques paragraphes
+                    if (index === 2) {
+                        setTimeout(() => {
+                            document.getElementById('scrollButton').style.opacity = '1';
+                        }, 1000);
+                    }
+                }, 1000 + index * 2000);
+            });
+        }
+        
+        // Fonction pour faire défiler vers le bas
+        function scrollDown() {
+            const messageDiv = document.getElementById('secretMessage');
+            const scrollPosition = messageDiv.scrollTop;
+            const newPosition = scrollPosition + 100; // Défiler de 100px
+            
+            messageDiv.scrollTo({
+                top: newPosition,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Masquer/afficher le bouton de défilement en fonction de la position
+        document.getElementById('secretMessage').addEventListener('scroll', function() {
+            const messageDiv = this;
+            const scrollButton = document.getElementById('scrollButton');
+            
+            // Calculer si on est proche de la fin du défilement
+            const isNearBottom = messageDiv.scrollHeight - messageDiv.scrollTop - messageDiv.clientHeight < 50;
+            
+            // Masquer le bouton si on est près de la fin
+            if (isNearBottom) {
+                scrollButton.style.opacity = '0';
+            } else {
+                scrollButton.style.opacity = '1';
+            }
+        });
+    </script>
+</body>
+</html>
